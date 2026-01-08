@@ -1,0 +1,311 @@
+<style>
+        /* auth：所有与用户登录/注册功能相关的样式 */
+        /* btn：按钮样式 */
+
+        /* 样式控制 */
+        body{
+            /* 全局字体 */
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            /* 外边界设置 */
+            margin: auto;
+            /* 内边距 */
+            padding: auto;
+            /* 背景颜色 */
+            background: cornsilk;
+        }
+
+        /* 手机窗口样式设置 */
+        .phone-window{
+            height: 738px;
+            width: 375px;
+            border: 6px solid #333; /* 边框设置 */
+            border-radius: 40px;
+            overflow: hidden; /* 隐藏超出部分 */
+            margin: 0 auto; /* 水平居中 */
+            position: relative;
+            box-shadow: 0 0 30px rgba(0,0,0,0.2); /* 阴影效果 */
+            background: white; /* 内容区域白色 */
+        }
+
+        /* 内容区域设置 */
+        .phone-content {
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+        }
+
+        /* 应用顶部设置 */
+        .app-top{
+            padding: 15px;
+            background: #4285f4; /* Google蓝色 */
+            color: white;
+            text-align: center;
+            position: sticky; /* 粘性定位 */
+            top: 0; /* 固定在顶部 */
+            z-index: 10; /* 确保在其他元素上方 */
+        }
+
+        /* 选项卡 */
+        .auth-tabs{
+            display: flex; /* 弹性布局 */
+            border-bottom: 1px solid #ddd; /* 底部分隔线 */
+        }
+
+        .tab-btn {
+            flex: 1; /* 平均分配宽度 */
+            padding: 15px;
+            background: none;
+            border: none; /* 移除默认按钮边框 */
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .tab-btn.active {
+            border-bottom: 3px solid #4285f4; /* 激活状态指示条 */
+            color: #4285f4;
+            font-weight: bold;
+        }
+
+        /* 表单样式 */
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd; /* 浅灰色边框 */
+            border-radius: 8px; /* 圆角输入框 */
+            box-sizing: border-box; /* 确保padding不影响总宽度 */
+        }
+
+        .btn {
+            background: #4285f4;
+            color: white;
+            transition: 0.3s; /* 悬停动画 */
+            width: 100%;          /* 保持全宽 */
+            padding: 12px 22px;   /* 增大内边距（上下16px，左右24px） */
+            font-size: 18px;      /* 增大字体 */
+            border-radius: 12px;  /* 更大的圆角 */
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #3367d6; /* 鼠标悬停时变深蓝色 */
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #4285f4;
+            cursor: pointer;
+        }
+        
+        /* 添加弹窗样式 */
+        .forgot-password-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            z-index: 100;
+        }
+
+        /* 手机状态栏模拟 */
+        .status-bar {
+            height: 24px;
+            background:black; /* Android蓝色 */
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 16px;
+            gap: 16px;
+            font-size: 12px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        /* 加载动画 */
+        .spinner {
+            display: inline-block;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* 禁用按钮样式 */
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* 错误提示动画 */
+        .password-error {
+            transition: opacity 0.3s ease;
+        }
+
+        .hide-auth {
+            display: none !important;
+        }
+        /* 返回按钮样式 */
+        .back-btn {
+            background: none;
+        border: none;
+        color: #4285f4;
+        font-size: 16px;
+        cursor: pointer;
+        padding: 10px 0;
+        margin-bottom: 15px;
+        }
+
+        .back-btn:hover {
+            text-decoration: underline;
+        }
+
+          /* 用户和管理员面板样式 */
+        .user-section, .admin-section {
+            padding: 15px;
+            display: none;
+        }
+
+        .user-section.active, .admin-section.active {
+            display: block;
+        }
+
+
+        .user-tabs {
+        display: flex;
+        border-bottom: 1px solid #ddd;
+        }
+
+        .user-tabs .tab-btn {
+            flex: 1;
+            padding: 15px;
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .user-tabs .tab-btn.active {
+            border-bottom: 3px solid #4285f4;
+            color: #4285f4;
+            font-weight: bold;
+        }
+
+        .admin-tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .admin-tabs .tab-btn {
+            flex: 1;
+            padding: 15px;
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .admin-tabs .tab-btn.active {
+            border-bottom: 3px solid #4285f4;
+            color: #4285f4;
+            font-weight: bold;
+        }
+
+        /* 列表项样式 */
+        .list-item {
+            background: #f5f5f5;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .list-item h4 {
+            margin: 0 0 5px 0;
+        }
+
+        .list-item p {
+            margin: 5px 0;
+        }  
+
+        .list-item .actions {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+        }
+
+        .list-item .actions button {
+            background: none;
+            border: none;
+            color: #4285f4;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        /* 骑行计时器 */
+        #ride-timer {
+            font-size: 24px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        /* 模态框样式 */
+        #modal-content input, #modal-content select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        #modal-content label {
+            display: block;
+            margin-bottom: 5px;
+        }        
+
+        /* 用户面板顶部调整 */
+        .user-dashboard .app-top {
+            padding: 10px;
+            background: #4285f4;
+            text-align: right;
+        }
+
+        .user-dashboard .app-top h2 {
+            display: none; /* 隐藏标题 */
+        }
+
+        /* 骑行计时器样式调整 */
+        #ride-timer {
+            font-size: 32px;
+            font-weight: bold;
+            color: #4285f4;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        /* 骑行结束按钮样式 */
+        #end-ride-btn {
+            background: #f44336; /* 红色更显眼 */
+            margin-top: 20px;
+        }
+
+        #end-ride-btn:hover {
+            background: #d32f2f;
+        }
+
+        /* 错误消息样式 */
+        .error-message {
+            color: #f44336;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .hide-title .app-top h2 {
+            display: none;
+        }
+    </style>
